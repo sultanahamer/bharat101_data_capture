@@ -1,6 +1,7 @@
 import { addLoginPacket } from './repositories/login_packet_repository.js'
 import { addTrackingPacket } from './repositories/tracking_packet_repository.js'
 import { addHealthMonitoringPacket } from './repositories/health_monitoring_packet_repository.js'
+import { logger } from './logger.js'
 
 const HEALTH_MONITORING_PACKET = "HEALTH_MONITORING_PACKET";
 const TRACKING_PACKET = "TRACKING_PACKET";
@@ -14,14 +15,13 @@ const packetDescriptors = {
 
 const getPacketDescriptor = (packet) => {
   const numberOfFields = packet.split(",").length;
-  console.log(numberOfFields);
   return Object.values(packetDescriptors).find(handler => handler.numberOfFields == numberOfFields);
 }
 
 export const processPacket = (packet) => {
   const packetDescriptor = getPacketDescriptor(packet);
   if (!packetDescriptor) {
-    console.error("Encountered a new packet type. Not handling this, ", packet);
+    logger.error("Encountered a new packet type. Not handling this, ", packet);
     return;
   }
 

@@ -12,12 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.7",
+    "log4js": "^6.3.0",
     "luxon": "^2.3.0",
     "mariadb": "^2.5.5"
   },
   "devDependencies": {
     "@types/config": "^0.0.41",
-    "eslint": "^8.6.0",
-    "@types/luxon": "^2.0.9"
+    "@types/luxon": "^2.0.9",
+    "eslint": "^8.6.0"
   }
 }

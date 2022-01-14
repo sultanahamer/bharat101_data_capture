@@ -1,6 +1,7 @@
 import { connectionPool } from "../orm.js";
 import { getUtcDateString } from "./date_utils.js";
 import { getPlaceHoldersFor } from "./query_utils.js";
+import { logger } from '../logger.js'
 
 const fieldIndexesToIgnore = [0];
 
@@ -16,10 +17,11 @@ export const addLoginPacket = async (packet) => {
     const connection = await connectionPool.getConnection();
     const queryWithPlaceHolders = `insert into login_packets values (${getPlaceHoldersFor(rowData.length)} )`;
     await connection.query(queryWithPlaceHolders, rowData);
+    logger.debug("Saved a login packet");
     connection.release();
   }
   catch(e) {
-    console.error("Error inserting login packet into databse", e);
+    logger.error("Error inserting login packet into databse", e);
   }
 }
 

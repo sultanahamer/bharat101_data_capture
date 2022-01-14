@@ -2,6 +2,7 @@ import { connectionPool } from "../orm.js";
 import { getUtcDateString } from "./date_utils.js";
 import { getTimeStampStringFrom } from "./packet_data_parsing_utils.js";
 import { getPlaceHoldersFor } from "./query_utils.js";
+import { logger } from '../logger.js'
 
 const fieldIndexesToIgnore = [0, 1, 2, 7, 9, 10];
 const dateFieldIndex = 9;
@@ -21,10 +22,10 @@ export const addTrackingPacket = async (packet) => {
     const queryWithPlaceHolders = `insert into tracking_packets values (${getPlaceHoldersFor(rowData.length)} )`;
     await connection.query(queryWithPlaceHolders, rowData);
     connection.release();
+    logger.debug("Saved a tracking packet");
   }
   catch(e) {
-    console.error("Error inserting tracking packet into databse", e);
+    logger.error("Error inserting tracking packet into databse", e);
   }
 }
-
 

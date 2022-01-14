@@ -1,6 +1,7 @@
 import { connectionPool } from "../orm.js";
 import { getUtcDateString } from "./date_utils.js";
 import { getPlaceHoldersFor } from "./query_utils.js";
+import { logger } from '../logger.js'
 
 const fieldIndexesToIgnore = [0];
 
@@ -17,10 +18,10 @@ export const addHealthMonitoringPacket = async (packet) => {
     const queryWithPlaceHolders = `insert into health_monitoring_packets values (${getPlaceHoldersFor(rowData.length)} )`;
     await connection.query(queryWithPlaceHolders, rowData);
     connection.release();
+    logger.debug("Saved a health packet");
   }
   catch(e) {
-    console.error("Error inserting tracking packet into databse", e);
+    logger.error("Error inserting health monitoring packet into databse", e);
   }
 }
-
 
