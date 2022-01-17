@@ -28,7 +28,10 @@ const onData = data => {
 }
 createServer(sock => {
   sock.on('data', onData);
-
+  sock.on("error", (err) => {
+    logger.error("Caught error on socket", err);
+    unfinishedPacket = "";
+  }); 
 }).listen(port, host);
 
 logger.info("############################ Listner Is Running ############################", host, port);
