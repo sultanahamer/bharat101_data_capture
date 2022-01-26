@@ -3,16 +3,20 @@ import { getUtcDateString } from "./date_utils.js";
 import { getTimeStampStringFrom } from "./packet_data_parsing_utils.js";
 import { getPlaceHoldersFor } from "./query_utils.js";
 import { logger } from '../logger.js'
+import { getVehicleRegNosMappedWithImei } from "./vehicles.js";
 
 const fieldIndexesToIgnore = [0, 1, 2, 7, 9, 10];
 const dateFieldIndex = 9;
 const timeFieldIndex = 10;
+const imeiFieldIndex = 6;
 
 const getRowData = (packet) => {
   const data = packet.substr(0, packet.lastIndexOf("*")).split(",");
   const timestampFromPacket = getTimeStampStringFrom(data, dateFieldIndex, timeFieldIndex);
-  const dataWithoutRequiredFields = data.filter((field, index) => !fieldIndexesToIgnore.includes(index));
-  return dataWithoutRequiredFields.concat(timestampFromPacket, getUtcDateString(data));
+  const imei = data[imeiFieldIndex];
+  const vehicleRegistrationNumber = getVehicleRegNosMappedWithImei()[imei] || "";
+  const dataWithoutRequiredFields = data.filter((_field, index) => !fieldIndexesToIgnore.includes(index));
+  return dataWithoutRequiredFields.concat(timestampFromPacket, getUtcDateString(data), vehicleRegistrationNumber);
 }
 
 export const addTrackingPacket = async (packet) => {

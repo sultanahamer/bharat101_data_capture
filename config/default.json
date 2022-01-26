@@ -4,7 +4,7 @@
       "port": 3306,
       "username": "username",
       "password": "password",
-      "connectionLimit": 5,
+      "connectionLimit": 10,
       "database": "database_name"
     },
     "server": {
@@ -13,5 +13,8 @@
     },
     "logging": {
       "directoryPath": "./log/gpscapture"
+    },
+    "vehicleDataFetch": {
+      "refreshIntervalInMinutes": 5
     }
   }

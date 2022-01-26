@@ -2,7 +2,7 @@ import { createServer } from 'net';
 import config from "config";
 import { processPacket } from './packet_processor.js'
 import { logger } from './logger.js'
-
+import { initialVehicleDataFetchPromise } from "./repositories/vehicles.js";
 
 var host = config.get("server.host");
 var port = config.get("server.port");
@@ -27,6 +27,8 @@ const getDataHandler = () => {
     }
   }
 }
+
+await initialVehicleDataFetchPromise;
 
 const server = createServer(sock => {
   sock.on("error", (err) => {
